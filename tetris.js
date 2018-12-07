@@ -52,6 +52,13 @@ var tab_rotation_tetrimino = [
     ["0", "0", "0", "0", "0"],
     ["0", "0", "0", "0", "0"]
 ]
+var new_tab_rotation_tetrimino = [
+    ["0", "0", "0", "0", "0"],
+    ["0", "0", "0", "0", "0"],
+    ["0", "0", "0", "0", "0"],
+    ["0", "0", "0", "0", "0"],
+    ["0", "0", "0", "0", "0"]
+]
 var circle_v = ["v00", "v01", "v02", "v03", "v04", "v05", "v06", "v07"]
 var circle_w = ["w00", "w01", "w02", "w03", "w04", "w05", "w06", "w07", "w08", "w09", "w10", "w11", "w12", "w13", "w14", "w15"]
 
@@ -64,6 +71,8 @@ function orient_tetrimino() {
             if ((x > 0) && (y > 0)) {
                 if (tetris_plan[x][y] == "8") {
                     console.log("block en: x" + x + " et en y" + y)
+                    tab_rotation_tetrimino[x][y-2]="8"
+                    
                 }
             }
             else{
@@ -71,6 +80,24 @@ function orient_tetrimino() {
             }
         }
     }
+    console.log(tab_rotation_tetrimino)
+    var origMatrix = tab_rotation_tetrimino.slice();
+    for(var i=0; i < tab_rotation_tetrimino.length; i++) {
+        // Map each row entry to its rotated value
+        var row = tab_rotation_tetrimino[i].map(function(x, j) {
+            var k = (tab_rotation_tetrimino.length - 1) - j;
+            return origMatrix[k][i];
+        });
+        tab_rotation_tetrimino[i] = row;
+    }
+    console.log(tab_rotation_tetrimino)
+    for (x = (tetrimino.pos_x - 2); x <= (tetrimino.pos_x + 2); x++) {
+        for (y = (tetrimino.pos_y - 2); y <= (tetrimino.pos_y + 2); y++) {
+            tetris_plan[x][y+2]=tab_rotation_tetrimino[x][y]
+        }
+    }
+    generate_scene()
+
 }
 
 
